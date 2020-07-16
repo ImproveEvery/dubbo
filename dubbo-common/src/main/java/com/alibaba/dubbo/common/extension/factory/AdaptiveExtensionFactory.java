@@ -30,7 +30,9 @@ import java.util.List;
 @Adaptive
 public class AdaptiveExtensionFactory implements ExtensionFactory {
 
-    //扩展对象的集合，默认的可以分为dubbo 的SPI中接口实现类对象或者Spring bean对象
+    /**
+     * 扩展对象的集合，默认的可以分为dubbo 的SPI中接口实现类对象或者Spring bean对象
+     */
     private final List<ExtensionFactory> factories;
 
     public AdaptiveExtensionFactory() {

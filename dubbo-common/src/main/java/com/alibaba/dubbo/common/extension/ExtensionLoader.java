@@ -123,6 +123,8 @@ public class ExtensionLoader<T> {
 
     private ExtensionLoader(Class<?> type) {
         this.type = type;
+        //自适应实现只能有一个，自适应实现类获取有两种方式，
+        // 一种是通过配置文件，这种就是针对@Adaptive注解在类级别的时；而@Adaptive注解在方法级别时，自适应实现类就需要通过字符码动态生成。
         objectFactory = (type == ExtensionFactory.class ? null : ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
     }
 
@@ -136,6 +138,10 @@ public class ExtensionLoader<T> {
         return type.isAnnotationPresent(SPI.class);
     }
 
+    /**
+     * 对于每个扩展点，只维护一个ExtensionLoad，具体扩展实现类和实例，都是通过相应的ExtensionLoader获取的
+     * 针对每个扩展实现的实例都是单例的，所以在扩展实现时应保证线程安全。
+     */
     @SuppressWarnings("unchecked")
     public static <T> ExtensionLoader<T> getExtensionLoader(Class<T> type) {
         //扩展点接口为空，抛出异常

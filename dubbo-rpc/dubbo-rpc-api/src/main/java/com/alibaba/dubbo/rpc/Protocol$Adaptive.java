@@ -2,6 +2,9 @@ package com.alibaba.dubbo.rpc;
 
 import com.alibaba.dubbo.common.extension.ExtensionLoader;
 
+/**
+ * Protocol扩展点自适应类，通过javasist代码生成的类
+ */
 public class Protocol$Adaptive implements Protocol {
 
     @Override

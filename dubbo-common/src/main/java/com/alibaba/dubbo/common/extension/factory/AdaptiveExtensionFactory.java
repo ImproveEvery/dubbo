@@ -35,6 +35,9 @@ public class AdaptiveExtensionFactory implements ExtensionFactory {
      */
     private final List<ExtensionFactory> factories;
 
+    /**
+     * 在调用newInstance实例化方法的时候，会触发执行这个构造方法。
+     */
     public AdaptiveExtensionFactory() {
         ExtensionLoader<ExtensionFactory> loader = ExtensionLoader.getExtensionLoader(ExtensionFactory.class);
         List<ExtensionFactory> list = new ArrayList<ExtensionFactory>();

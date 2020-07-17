@@ -123,8 +123,8 @@ public class ExtensionLoader<T> {
 
     private ExtensionLoader(Class<?> type) {
         this.type = type;
-        //自适应实现只能有一个，自适应实现类获取有两种方式，
-        // 一种是通过配置文件，这种就是针对@Adaptive注解在类级别的时；而@Adaptive注解在方法级别时，自适应实现类就需要通过字符码动态生成。
+        //每个扩展点有且仅有一个自适应实现，通过@Adaptive注解标定自适应实现，这个注解可以在实现类上，也可以在方法上
+        //ExtensionFactory没有objectFactory，他的自适应实现通过在实现类AdaptiveExtensionFactory上加@Adaptive注解实现的：
         objectFactory = (type == ExtensionFactory.class ? null : ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
     }
 
@@ -954,14 +954,16 @@ public class ExtensionLoader<T> {
     }
 
     /**
-     * 获得接口适配器类
+     * 获得接口适配器类,如果是adaptive类的话就不走createAdaptiveExtensionClass()方法
      * @return
      */
     private Class<?> getAdaptiveExtensionClass() {
         getExtensionClasses();
+        //判断是否缓存了@Adpative类，是的话就直接返回，目前只有ExtensionFactory会持有该cachedAdaptiveClass，且等于AdaptiveExtensionFactory
         if (cachedAdaptiveClass != null) {
             return cachedAdaptiveClass;
         }
+        //没有缓存则说明@Adpative是注解在方法上的，需要通过动态生成$Adaptive的自适应类
         return cachedAdaptiveClass = createAdaptiveExtensionClass();
     }
 

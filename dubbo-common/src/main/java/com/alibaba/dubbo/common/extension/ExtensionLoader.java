@@ -25,6 +25,7 @@ import com.alibaba.dubbo.common.utils.ConcurrentHashSet;
 import com.alibaba.dubbo.common.utils.ConfigUtils;
 import com.alibaba.dubbo.common.utils.Holder;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import de.javakaffee.kryoserializers.JdkProxySerializer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -125,7 +126,8 @@ public class ExtensionLoader<T> {
         this.type = type;
         //每个扩展点有且仅有一个自适应实现，通过@Adaptive注解标定自适应实现，这个注解可以在实现类上，也可以在方法上
         //ExtensionFactory没有objectFactory，他的自适应实现通过在实现类AdaptiveExtensionFactory上加@Adaptive注解实现的：
-        objectFactory = (type == ExtensionFactory.class ? null : ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
+        objectFactory = (type == ExtensionFactory.class ? null :
+                ExtensionLoader.getExtensionLoader(ExtensionFactory.class).getAdaptiveExtension());
     }
 
     /**
@@ -604,7 +606,6 @@ public class ExtensionLoader<T> {
                 throw new IllegalStateException("fail to create adaptive instance: " + createAdaptiveInstanceError.toString(), createAdaptiveInstanceError);
             }
         }
-
         return (T) instance;
     }
 

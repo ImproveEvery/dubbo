@@ -61,5 +61,4 @@ public class AdaptiveExtensionFactory implements ExtensionFactory {
         }
         return null;
     }
-
 }
